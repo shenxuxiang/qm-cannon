@@ -1,0 +1,24 @@
+{
+  "name": "qm-cannon",
+  "version": "0.0.3",
+  "description": "create react typescript project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "bin"
+  ],
+  "author": "shenxuxiang",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "4.1.0",
+    "commander": "^10.0.1",
+    "download-git-repo": "^3.0.2",
+    "inquirer": "8.0.0",
+    "prettier": "^2.8.8"
+  },
+  "bin": {
+    "qm-cannon": "./bin/cannon.js"
+  }
+}
