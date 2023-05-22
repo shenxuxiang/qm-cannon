@@ -24,21 +24,21 @@ module.exports = function(projectName) {
     },
     {
       type: 'rawlist',
-      message: '请选择创建项目模版',
+      message: '请选择项目创建模版',
       choices: [ 'react-ts' ],
       default: 0,
       name: 'template'
     },
     {
       type: 'rawlist',
-      message: '是否哪种打包构建方式对项目进行打包构建',
+      message: '请选则打包构建方式',
       name: 'buildType',
       choices: [ 'webpack', 'vite' ],
       default: 'webpack',
     },
     {
       type: 'confirm',
-      message: '是否在项目中注入 redux',
+      message: '是否在项目中使用 redux',
       name: 'redux',
       default: true,
     },

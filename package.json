@@ -1,6 +1,6 @@
 {
   "name": "qm-cannon",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "create react typescript project",
   "main": "index.js",
   "scripts": {
