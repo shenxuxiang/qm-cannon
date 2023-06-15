@@ -18,7 +18,6 @@ qm-cannon create projectName
 # 模版提供了哪些内容
 
 - 使用 axios 库封装的 http 请求；
-- 使用 html2canvas、jspdf 封装的打印（自动识别内容，不会将一个完成的部分分别打印在不同的页面上）；
 - 路由定义、路由守卫以及左侧菜单栏
 - js、css 资源的按需加载功能
 - 生产构建时自动 tree shaking
