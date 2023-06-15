@@ -54,7 +54,7 @@ function handleResponse(projectName) {
   return async function(response) {
     const { version, template, buildType, redux } = response;
     const repository = 'cannon' + '-' + template + '-' + buildType;
-    const branchName = redux ? 'master' : 'feature/no-redux';
+    const branchName = redux ? 'with-redux' : 'master';
 
     try { 
       process.stdout.write(chalk.bold.green(`\ncreating ${projectName} project ...\n\n`));
