@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
+const fs = require('fs');
+const path = require('path');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
-const path = require('path');
-const fs = require('fs');
+const prettier = require('./prettier');
 const child_process = require('child_process');
 const downloadTemplate = require('./downloadTemplate');
 
@@ -66,9 +67,8 @@ function handleResponse(projectName) {
       package.version = version;
       package.name = projectName;
       
-      fs.writeFileSync(packagePath, JSON.stringify(package));
-      // 文件进行格式化
-      child_process.spawnSync('npx', ['prettier', '-w', packagePath]);
+      // package 文件进行格式化并写入
+      await prettier(package, packagePath);
 
       process.stdout.write(chalk.bold.green(`The ${projectName} project creation completed\n\n`));
     } catch (error) {

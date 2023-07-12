@@ -7,12 +7,14 @@ const fs = require('fs');
 const chalk = require('chalk');
 const init = require('./cannon-create');
 
+program.option('-c, --config <value>', 'special config file', 'cannon.config.json');
+
 program.version(version, '-V, --version', 'output the current version')
 	.name('qm-cannon')
 	.usage('create <project-name>')
 	.command('create')
 	.argument('<project-name>', 'create the name of the project')
-	.action((projectName) => {
+	.action(function (projectName) {
 		if (projectName.includes('/')) {
 			process.stdout.write(chalk.bold.red("\n   project name cannot contain '/'"));
 			process.stdout.write('\n\n');
