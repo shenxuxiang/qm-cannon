@@ -1,6 +1,6 @@
 {
   "name": "qm-cannon",
-  "version": "0.1.1",
+  "version": "1.0.0@beta-1",
   "description": "create react typescript project",
   "main": "./bin/cannon.js",
   "type": "module",
