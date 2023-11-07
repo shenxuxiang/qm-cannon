@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 
-const { program } = require('commander');
-const { version } = require('../package.json');
-const path = require('path');
-const fs = require('fs');
-const chalk = require('chalk');
-const init = require('./cannon-create');
+import fs from 'fs';
+import path from 'path';
+import chalk from 'chalk';
+import process from 'process';
+import { program } from 'commander';
+import { fileURLToPath } from 'url';
+import init from './cannon-create.js';
 
-program.option('-c, --config <value>', 'special config file', 'cannon.config.json');
+const __dirname = fileURLToPath(new URL('./', import.meta.url));
+const { version } = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../package.json'), 'utf-8'));
 
 program.version(version, '-V, --version', 'output the current version')
 	.name('qm-cannon')
@@ -37,4 +39,3 @@ program.version(version, '-V, --version', 'output the current version')
 	});
 
 program.parse(process.argv);
-

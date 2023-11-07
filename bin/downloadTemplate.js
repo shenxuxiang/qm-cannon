@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
-const download = require('download-git-repo');
-const chalk = require('chalk');
-const path = require('path');
+import download from 'download-git-repo';
+import chalk from 'chalk';
 
-module.exports = function (repository, branch, destination) {
+export default function (repository, branch, destination) {
   return new Promise((resolve, reject) => {
     const url = `github:shenxuxiang/${repository}#${branch}`;
     let interval = null;
 
     function printProgressBar(percent) {
+      let progressBar = '';
       progressBar = chalk.bold.cyan('   download ');
       progressBar += chalk.bold.white('[');
       progressBar += chalk.gray('='.repeat(Math.floor(percent / 5)).padEnd(20, ' '));
@@ -18,7 +18,7 @@ module.exports = function (repository, branch, destination) {
       progressBar += chalk.bold.green(percent + '%');
       progressBar += '\r';
       process.stdout.write(progressBar);
-      
+
       if (percent >= 98) {
         clearTimeout(interval);
         interval = null;

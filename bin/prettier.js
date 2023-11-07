@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
-const Stream = require('stream');
-const prettier = require('prettier');
+import fs from 'fs';
+import path from 'path';
+import Stream from 'stream';
+import prettier from 'prettier';
 
-async function format(chunk, dest) {
+export default async function format(chunk, dest) {
   if (!chunk) return;
 
   let content = '';
@@ -40,4 +40,3 @@ function readdata(stream) {
   });
 }
 
-module.exports = format;

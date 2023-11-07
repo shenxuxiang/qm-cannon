@@ -1,32 +1,33 @@
 # qm-cannon
-qm-cannon 是一个快速生成前端项目的脚手架工具，该插件是由安徽阡陌科技的WEB前端团队搭建。
+qm-cannon 是一个快速生成前端项目的脚手架工具。
 
 
-# 创建项目
+## 创建项目
 ```bash
 qm-cannon create projectName
 ```
 按照屏幕上的提示依次输入，最后就会在当前目录下创建一个 react + typescript 的项目。
 
 
-# 模版选项
+## 模版选项
 
-- 输入版本号；
-- 提供了 webpack、vite 构建的选项；
-- 提供了 redux 数据状态管理的选项。
+> 输入版本号；
 
-# 模版提供了哪些内容
+> 支持 react、vue 两个模板；
 
-- 使用 axios 库封装的 http 请求；
-- 路由定义、路由守卫以及左侧菜单栏
-- js、css 资源的按需加载功能
-- 生产构建时自动 tree shaking
-- 选用 redux 数据状态管理，页面切换时自动完成进行 reducer 更新；
-- mockjs 数据模拟
+> 提供了 webpack、vite 构建的选项；
 
-# 前端工程化设置
+## 项目介绍
+> 支持 react、vue 两个模板可供选择；
 
-- commitlint，在 git commit 时对 message 进行校验
-- eslint，在 git commit 时通过 lint-staged 对提交的代码进行代码检查
-- prettier，在 git commit 时通过 lint-staged 对提交的代码进行格式化
+> 项目模板提炼自企业级后台管理系统，并在多个项目投入实际的应用；
 
+> 提供了初级的 UI 界面、HTTP 接口封装、以及工具函数；
+
+> 提供了相关的 UI 组件库，提升开发效率，并支持国际化、主题设置；
+
+> 提供了路由守卫、底层数据封装，数据模型管理；
+
+> 开箱即用的 webpack、vite 配置项，支持 TreeShaking、以及页面按需加载功能；
+
+> 以及前端工程化配置（eslint、commitlint、prettier）一应俱全。

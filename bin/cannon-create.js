@@ -1,18 +1,17 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
-const chalk = require('chalk');
-const inquirer = require('inquirer');
-const prettier = require('./prettier');
-const child_process = require('child_process');
-const downloadTemplate = require('./downloadTemplate');
+import fs from 'fs';
+import path from 'path';
+import chalk from 'chalk';
+import inquirer from 'inquirer';
+import prettier from './prettier.js';
+import downloadTemplate from './downloadTemplate.js';
 
-module.exports = function(projectName) {
+export default function(projectName) {
   const questions = [
     {
       type: 'input',
-      message: 'input project version: ',
+      message: 'Please Input Your Project Version: ',
       name: 'version',
       default: '1.0.0',
       validate: (input) => {
@@ -25,23 +24,10 @@ module.exports = function(projectName) {
     },
     {
       type: 'rawlist',
-      message: '请选择项目创建模版',
-      choices: [ 'react-ts' ],
+      message: 'Please Select Template',
+      choices: [ 'react', 'vue' ],
       default: 0,
       name: 'template'
-    },
-    {
-      type: 'rawlist',
-      message: '请选则打包构建方式',
-      name: 'buildType',
-      choices: [ 'webpack', 'vite' ],
-      default: 'webpack',
-    },
-    {
-      type: 'confirm',
-      message: '是否在项目中使用 redux',
-      name: 'redux',
-      default: true,
     },
   ];
 
@@ -50,25 +36,71 @@ module.exports = function(projectName) {
     .catch(catchError);
 }
 
+async function getConstructionMethod() {
+  try {
+    const questions = [
+      {
+        type: 'rawlist',
+        message: 'Please Select The Construction Method',
+        name: 'method',
+        choices: [ 'webpack', 'vite' ],
+        default: 'vite',
+      },
+    ];
+
+    const response = await inquirer.prompt(questions);
+    return response.method;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getReactRedux() {
+  try {
+    const questions = [
+      {
+        type: 'confirm',
+        default: false,
+        message: 'Whether To Use Redux',
+        name: 'redux',
+      },
+    ];
+
+    const response = await inquirer.prompt(questions);
+    return response.redux;
+  } catch (error) {
+    throw error;
+  }
+}
+
 function handleResponse(projectName) {
   const output = path.resolve(projectName);
   return async function(response) {
-    const { version, template, buildType, redux } = response;
-    const repository = 'cannon' + '-' + template + '-' + buildType;
-    const branchName = redux ? 'with-redux' : 'master';
+    const { version, template } = response;
+    let redux = false;
+    let method = 'vite';
 
-    try { 
-      process.stdout.write(chalk.bold.green(`\ncreating ${projectName} project ...\n\n`));
+    if (template === 'react') {
+      redux = await getReactRedux();
+      method = await getConstructionMethod();
+    }
 
-      await downloadTemplate(repository, branchName, output);
+    // 一共三个仓库，分别是：cannon-react-ts-webpack、cannon-react-ts-vite、cannon-vue-ts-vite
+    const repository = 'cannon' + '-' + template + '-ts-' + method;
+    const branch = redux ? 'with-redux' : 'master';
+
+    try {
+      process.stdout.write(chalk.bold.green(`\nCreating 【${projectName}】 Project ... Please Wait\n\n`));
+
+      await downloadTemplate(repository, branch, output);
 
       const packagePath = path.resolve(output, 'package.json');
-      const package = require(packagePath);
-      package.version = version;
-      package.name = projectName;
-      
+      const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf-8'));
+      pkg.version = version;
+      pkg.name = projectName;
+
       // package 文件进行格式化并写入
-      await prettier(package, packagePath);
+      await prettier(pkg, packagePath);
 
       process.stdout.write(chalk.bold.green(`The ${projectName} project creation completed\n\n`));
     } catch (error) {
