@@ -6,7 +6,7 @@ qm-cannon 是一个快速生成前端项目的脚手架工具。
 ```bash
 qm-cannon create projectName
 ```
-按照屏幕上的提示依次输入，最后就会在当前目录下创建一个 react + typescript 的项目。
+按照屏幕上的提示依次输入相应的内容，就可以创建项目了。
 
 
 ## 模版选项
