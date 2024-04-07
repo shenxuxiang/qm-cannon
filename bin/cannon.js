@@ -3,39 +3,48 @@
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
-import process from 'process';
-import { program } from 'commander';
 import { fileURLToPath } from 'url';
-import init from './cannon-create.js';
+import { program } from "commander";
+import createProject from './create.js';
 
 const __dirname = fileURLToPath(new URL('./', import.meta.url));
-const { version } = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../package.json'), 'utf-8'));
 
-program.version(version, '-V, --version', 'output the current version')
-	.name('qm-cannon')
-	.usage('create <project-name>')
-	.command('create')
-	.argument('<project-name>', 'create the name of the project')
-	.action(function (projectName) {
-		if (projectName.includes('/')) {
-			process.stdout.write(chalk.bold.red("\n   project name cannot contain '/'"));
-			process.stdout.write('\n\n');
-			return;
-		}
-		const dir = process.cwd();
-		const files = fs.readdirSync(dir);
-		let alreadyExists = false;
-		for (let i = 0; i < files.length; i++) {
-			const filename = files[i];
-			if (filename === projectName) alreadyExists = true;
-		}
-		if (alreadyExists) {
-			process.stdout.write('\n');
-			process.stdout.write(chalk.red('   The project name you inputed already exists in the current directory.\n\n'));
-		} else {
-			process.stdout.write(chalk.bold.green('Please input the correct content according to the prompt information\n'));
-			init(projectName);
-		}
-	});
+const rootDir = process.cwd();
 
-program.parse(process.argv);
+const pkg = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../package.json'), 'utf-8'));
+
+program
+  .version(pkg.version, '-V, --version', 'output the version number')
+  .name('qm-cannon')
+  .command('create')
+  .argument('<project-name>')
+  .action(function(projectName) {
+    if (!validateProjectName(projectName)) {
+      process.stdout.write(chalk.bold.red(`   The Project Name Format Is Incorrect!\n`));
+      process.exit('1');
+    }
+
+    if (isExisting(path.resolve(rootDir, projectName))) {
+      process.stdout.write(chalk.bold.red(`   The Project Already Exists!\n`));
+      process.exit('1');
+    }
+
+    process.stdout.write(chalk.cyanBright(`   Project Creation In Progress, Please Wait ...\n\n`));
+
+    setTimeout(() => createProject(projectName), 1000);
+  });
+
+program.parse();
+
+function validateProjectName(name) {
+  return /^[a-zA-Z_][\w\-]+$/.test(name);
+}
+
+function isExisting(filePath) {
+  try {
+    fs.accessSync(filePath, fs.constants.F_OK);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
