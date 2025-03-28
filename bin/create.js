@@ -11,33 +11,34 @@ const rootDir = process.cwd();
 
 const questions = [
   {
-    type: 'list',
+    type: 'rawlist',
     name: 'framework',
     message: 'Please Select Front End Framework: ',
     choices: [ 'react', new inquirer.Separator(), 'vue' ],
-    default: 'react',
+    default: 0,
   },
-  {
-    type: 'list',
-    name: 'tool',
-    message: 'Please Select A Code Building Tool: ',
-    choices: [ 'webpack', new inquirer.Separator(), 'vite' ],
-    default: 'webpack',
-  },
-  {
-    type: 'confirm',
-    name: 'model',
-    message: function(answers) {
-      if (answers.framework === 'react') {
-        return 'Do You Want To Import Redux: ';
-      } else {
-        return 'Do You Want To Import Pinia: ';
-      }
-    }
-  },
+  // {
+  //   type: 'rawlist',
+  //   name: 'tool',
+  //   message: 'Please Select A Code Building Tool: ',
+  //   choices: [ 'webpack', new inquirer.Separator(), 'vite' ],
+  //   default: 1,
+  // },
+  // {
+  //   type: 'confirm',
+  //   name: 'model',
+  //   message: function(answers) {
+  //     if (answers.framework === 'react') {
+  //       return 'Do You Want To Import Redux: ';
+  //     } else {
+  //       return 'Do You Want To Import Pinia: ';
+  //     }
+  //   }
+  // },
   {
     type: 'input',
     name: 'version',
+    default: '1.0.0',
     message: 'Please Input Project Version(format: xx.xx.xx): ',
     validate: function(input) {
       if (/^[1-9][0-9]*\.([1-9][0-9]*|0)\.([1-9][0-9]*|0)$/.test(input)) {
@@ -52,12 +53,11 @@ const questions = [
 export default async function create(projectName) {
   try {
     const resp = await inquirer.prompt(questions);
-    const { framework, tool, model, version } = resp;
+    const { framework, version } = resp;
+    const repository = `cannon-${framework}-ts-vite`;
 
-    const repository = 'cannon-' + framework + '-ts-' + tool;
-    const branch = framework === 'react' ? (model ? 'with-redux' : 'master') : 'master';
-
-    await downloadRepository(repository, branch, projectName);
+    await downloadRepository(repository, 'master', projectName);
+    // 新创建的项目目录
     const projectPath = path.resolve(rootDir, projectName);
 
     const packagePath = path.resolve(projectPath, 'package.json');

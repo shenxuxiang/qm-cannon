@@ -7,16 +7,17 @@ import { fileURLToPath } from 'url';
 import { program } from "commander";
 import createProject from './create.js';
 
-const __dirname = fileURLToPath(new URL('./', import.meta.url));
-
 const rootDir = process.cwd();
+
+const __dirname = fileURLToPath(new URL('./', import.meta.url));
 
 const pkg = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../package.json'), 'utf-8'));
 
 program
-  .version(pkg.version, '-V, --version', 'output the version number')
+  .version(pkg.version, '-V, --version', 'Output The Version Number')
   .name('qm-cannon')
   .command('create')
+  .description('Create A Front-End Project Template, Similar To The Create-React-App')
   .argument('<project-name>')
   .action(function(projectName) {
     if (!validateProjectName(projectName)) {
@@ -37,6 +38,7 @@ program
 program.parse();
 
 function validateProjectName(name) {
+  return true;
   return /^[a-zA-Z_][\w\-]+$/.test(name);
 }
 
